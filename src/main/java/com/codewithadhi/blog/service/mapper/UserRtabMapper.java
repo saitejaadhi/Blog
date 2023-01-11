@@ -9,5 +9,5 @@ componentModel = "spring" -> This will create @Component in Impl file
 so that we can autowired in the code to import
  */
 @Mapper(componentModel = "spring")
-public interface UserRtabMapper extends EntityMapper<UserRtabDTO, UserRtab>{
+public interface UserRtabMapper extends EntityMapper<UserRtabDTO, UserRtab> {
 }

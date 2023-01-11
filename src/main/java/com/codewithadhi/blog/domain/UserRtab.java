@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Table( name = "user_rtab")
+@Table(name = "user_rtab")
 @Getter
 @Setter
 public class UserRtab {
