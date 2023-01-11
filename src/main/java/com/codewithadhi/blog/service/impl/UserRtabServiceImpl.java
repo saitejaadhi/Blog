@@ -5,7 +5,7 @@ import com.codewithadhi.blog.execptions.BlogAppServiceException;
 import com.codewithadhi.blog.repositories.UserRtabRepository;
 import com.codewithadhi.blog.service.UserRtabService;
 import com.codewithadhi.blog.service.dto.UserRtabDTO;
-import com.codewithadhi.blog.service.mapper.impl.UserRtabMapperImpl;
+import com.codewithadhi.blog.service.mapper.UserRtabMapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -32,20 +32,19 @@ public class UserRtabServiceImpl implements UserRtabService {
 
     @Override
     public UserRtabDTO createUser(UserRtabDTO userRtabDTO) {
-        UserRtab userRtab = this.userRtabMapper.toEntity(userRtabDTO);
-        UserRtab savedUserRtab = this.userRtabRepository.save(userRtab);
-        return this.userRtabMapper.toDto(savedUserRtab);
+        UserRtab savedUserRtab = this.userRtabRepository.save(userRtabMapper.toEntity(userRtabDTO));
+        return userRtabMapper.toDto(savedUserRtab);
     }
 
     @Override
     public UserRtabDTO partialUpdate(UserRtabDTO userRtabDTO) {
 
-        UserRtab existingUserRtab = this.userRtabRepository.findById(userRtabDTO.getId())
+        UserRtab existingUserRtab = userRtabRepository.findById(userRtabDTO.getId())
                 .orElseThrow(() -> new BlogAppServiceException("User not found for id :".concat(String.valueOf(userRtabDTO.getId()))));
 
-        UserRtab updatedUserRtab = userRtabMapper.partialUpdate(userRtabDTO, existingUserRtab);
-        this.userRtabRepository.save(updatedUserRtab);
-        return this.userRtabMapper.toDto(updatedUserRtab);
+        UserRtab updatedUserRtab = userRtabMapper.partialUpdate(existingUserRtab, userRtabDTO);
+        userRtabRepository.save(updatedUserRtab);
+        return userRtabMapper.toDto(updatedUserRtab);
 
     }
     @Override
