@@ -6,6 +6,7 @@ import lombok.Builder;
 public class ApiResponse {
     private String message;
     private boolean success;
+
     public String getMessage() {
         return message;
     }
