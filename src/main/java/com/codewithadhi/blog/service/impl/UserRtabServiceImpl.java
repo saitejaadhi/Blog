@@ -8,9 +8,11 @@ import com.codewithadhi.blog.service.dto.UserRtabDTO;
 import com.codewithadhi.blog.service.mapper.UserRtabMapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,25 +23,40 @@ public class UserRtabServiceImpl implements UserRtabService {
     private final UserRtabMapperImpl userRtabMapper;
 
     @Override
-    public UserRtabDTO getUserById(Long id) {
-        log.info("REST request to find User by id {}", id);
+    public UserRtabDTO getUserById(Long userId) {
+        log.info("REST request to find User by id {}", userId);
+        if (Objects.isNull(userId)){
+            log.error("Fetching user failed, user id:'{}' cannot be null", userId);
+            throw new BlogAppServiceException("Exception occurred while fetching user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        UserRtab userRtab = this.userRtabRepository.findById(id).
-                orElseThrow(() -> new BlogAppServiceException("User not found for id : ".concat(String.valueOf(id))));
+        UserRtab userRtab = this.userRtabRepository.findById(userId).
+                orElseThrow(() -> new BlogAppServiceException("User not found for id : ".concat(String.valueOf(userId))));
 
         return this.userRtabMapper.toDto(userRtab);
     }
 
     @Override
     public UserRtabDTO createUser(UserRtabDTO userRtabDTO) {
+        log.info("REST request to create user for :{}", userRtabDTO);
+        if (Objects.isNull(userRtabDTO)){
+            log.error("User creation failed, user id:'{}' cannot be null", userRtabDTO);
+            throw new BlogAppServiceException("Exception occurred while creating user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         UserRtab savedUserRtab = this.userRtabRepository.save(userRtabMapper.toEntity(userRtabDTO));
         return userRtabMapper.toDto(savedUserRtab);
     }
 
     @Override
-    public UserRtabDTO partialUpdate(UserRtabDTO userRtabDTO) {
+    public UserRtabDTO updateUser(UserRtabDTO userRtabDTO, Long userId) {
+        log.info("REST request to update user for id:{}", userId);
+        if (Objects.isNull(userId)){
+            log.error("Updation failed, user id:'{}' cannot be null", userId);
+            throw new BlogAppServiceException("Exception occurred while updating the user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        UserRtab existingUserRtab = userRtabRepository.findById(userRtabDTO.getId())
+        UserRtab existingUserRtab = userRtabRepository.findById(userId)
                 .orElseThrow(() -> new BlogAppServiceException("User not found for id :".concat(String.valueOf(userRtabDTO.getId()))));
 
         UserRtab updatedUserRtab = userRtabMapper.partialUpdate(existingUserRtab, userRtabDTO);
@@ -58,10 +75,15 @@ public class UserRtabServiceImpl implements UserRtabService {
     }
 
     @Override
-    public void deleteUserById(Long id) {
-        log.info("REST request to delete for user id :{}", id);
+    public void deleteUserById(Long userId) {
+        log.info("REST request to delete for user id :{}", userId);
+        if (Objects.isNull(userId)){
+            log.error("User deletion failed, User ID cannot be null");
+            throw new BlogAppServiceException("Exception occurred while deleting user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        UserRtab userRtab = this.userRtabRepository.findById(id).orElseThrow(() -> new BlogAppServiceException("Exception occurred, no user found with id :".concat(String.valueOf(id))));
+        UserRtab userRtab = userRtabRepository.findById(userId)
+                .orElseThrow(() -> new BlogAppServiceException("Exception occurred, no user found with id :".concat(String.valueOf(userId))));
         userRtabRepository.delete(userRtab);
     }
 }

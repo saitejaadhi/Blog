@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface UserRtabService {
 
-    UserRtabDTO getUserById(Long id);
+    UserRtabDTO getUserById(Long userId);
     UserRtabDTO createUser (UserRtabDTO userRtabDTO);
-    UserRtabDTO partialUpdate(UserRtabDTO userRtabDTO);
+    UserRtabDTO updateUser(UserRtabDTO userRtabDTO, Long userId);
     List<UserRtabDTO> getAllUsers();
     void deleteUserById(Long id);
 
