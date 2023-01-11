@@ -82,6 +82,7 @@ public class UserRtabServiceImpl implements UserRtabService {
             throw new BlogAppServiceException("Exception occurred while deleting user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+
         UserRtab userRtab = userRtabRepository.findById(userId)
                 .orElseThrow(() -> new BlogAppServiceException("Exception occurred, no user found with id :".concat(String.valueOf(userId))));
         userRtabRepository.delete(userRtab);
