@@ -53,7 +53,6 @@ public class UserController {
                             .build());
         }
 
-
     }
 
     @GetMapping("/")
