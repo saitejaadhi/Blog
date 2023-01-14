@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 // POST - to create user
 // PUT - update the user
 // DELETE - to delete a user
@@ -40,14 +38,34 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         log.info("REST request to delete user of id:{}", userId);
 
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("User deleted successfully")
-                .success(true)
-                .build());
+        try {
+            userRtabService.deleteUserById(userId);
+            return ResponseEntity.ok(ApiResponse.builder()
+                    .message("User deleted successfully")
+                    .success(Boolean.TRUE)
+                    .build());
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError()
+                    .body(ApiResponse.builder()
+                            .message("User deletion failed")
+                            .success(Boolean.FALSE)
+                            .build());
+        }
+
+
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UserRtabDTO>> getAllUsers() {
+    public ResponseEntity<?> getAllUsers() {
+        log.info("REST request to get all users");
         return ResponseEntity.ok(userRtabService.getAllUsers());
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
+        log.info("REST request to get all users");
+        return ResponseEntity.ok(userRtabService.getUserById(userId));
+    }
+
 }
