@@ -6,6 +6,7 @@ import com.codewithadhi.blog.repositories.UserRtabRepository;
 import com.codewithadhi.blog.service.UserRtabService;
 import com.codewithadhi.blog.service.dto.UserRtabDTO;
 import com.codewithadhi.blog.service.mapper.UserRtabMapperImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @Log4j2
 public class UserRtabServiceImpl implements UserRtabService {
