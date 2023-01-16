@@ -16,7 +16,9 @@
 	<properties>
 		<org.projectlombok.version>1.18.20</org.projectlombok.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
-		<java.version>17</java.version>
+		<start-class>com.codewithadhi.blog.BlogApplication</start-class>
+		<modernizer-maven-plugin.version>2.4.0</modernizer-maven-plugin.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -62,6 +64,23 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.gaul</groupId>
+				<artifactId>modernizer-maven-plugin</artifactId>
+				<version>${modernizer-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>modernizer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>modernizer</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<javaVersion>${java.version}</javaVersion>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
