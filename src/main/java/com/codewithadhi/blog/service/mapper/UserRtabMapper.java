@@ -4,7 +4,7 @@ import com.codewithadhi.blog.domain.UserRtab;
 import com.codewithadhi.blog.service.dto.UserRtabDTO;
 import org.mapstruct.Mapper;
 
-/*
+/**
 componentModel = "spring" -> This will create @Component in Impl file
 so that we can autowired in the code to import
  */
